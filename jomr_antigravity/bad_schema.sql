@@ -1,3 +1,6 @@
+--https://codelabs.developers.google.com/getting-started-with-antigravity-skills?hl=en#4
+--Level 4: Procedural Logic (database-schema-validator)
+
 DROP TABLE IF EXISTS legacy_users;
 
 CREATE TABLE userProfile (
