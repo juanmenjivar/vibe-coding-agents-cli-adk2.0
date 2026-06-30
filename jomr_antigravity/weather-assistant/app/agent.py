@@ -1,3 +1,13 @@
+##https://codelabs.developers.google.com/getting-started-with-antigravity-skills?hl=en#5
+##Step 1: Scaffold and Initialize a New Agent Project
+##Run the creation command to scaffold a standardized layout. Once created, you must install its project dependencies before running any execution tasks.
+## 1. Create a lightweight prototype project structure
+##agents-cli create weather-assistant --prototype --yes
+## 2. Move into the directory and install required ADK dependencies
+##cd weather-assistant
+##agents-cli install
+
+
 # ruff: noqa
 # Copyright 2026 Google LLC
 #
@@ -30,7 +40,8 @@ from google.auth.exceptions import DefaultCredentialsError
 
 try:
     _, project_id = google.auth.default()
-    os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
+    if project_id:
+        os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
     os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
     os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 except DefaultCredentialsError:
