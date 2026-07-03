@@ -18,6 +18,7 @@ jomr_antigravity/
 │       └── license-header-adder      # Automates open-source license injection
 ├── ambient-expense-agent/        # Stateful event-driven ambient expense compliance agent (FastAPI, Port 8080)
 ├── customer_support_agent/       # Support agent for helpdesk ticketing, order lookups, and FAQ routing
+├── secure-agent-lab/             # Local workspace lab containing git identity and virtual environment setup
 ├── weather-assistant/            # Conversational bot for open-meteo weather queries and itinerary tracking
 ├── agy-cli-projects/             # Scratch CLI test configurations and drafts
 ├── bad_schema.sql                # SQL schema example used for testing the schema safety policy validator
@@ -42,7 +43,12 @@ An interactive customer support assistant built to streamline customer helpdesk 
 - Connects to CRM and database mock services to retrieve order details, track shipments, and resolve common customer disputes.
 - Routes complex queries to human operators or departments using conditional graph logic.
 
-### 3. [weather-assistant](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/weather-assistant)
+### 3. [secure-agent-lab](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab)
+A sandbox lab workspace configured for Kaggle CLI tasks:
+- Contains custom Git configuration (user identity) configured for `"Kaggle Student"`.
+- Houses a clean virtual environment managed via `uv` for sandbox testing.
+
+### 4. [weather-assistant](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/weather-assistant)
 A conversational weather assistant powered by ADK:
 - Connects to geocoding and weather API tools (e.g., Open-Meteo) to fetch real-time forecasts, temperatures, and wind conditions.
 - Helps plan itineraries by offering weather advice based on dates and locations.
