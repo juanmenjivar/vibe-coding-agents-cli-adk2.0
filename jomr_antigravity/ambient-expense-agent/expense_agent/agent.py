@@ -246,13 +246,20 @@ async def request_human_approval(ctx: Context, node_input: dict):
     )
 
 # 5. Record Outcome Node
-def record_outcome(ctx: Context, node_input: dict):
+def record_outcome(ctx: Context, node_input: dict | str):
     """Logs the final outcome and emits a UI content event."""
-    if "status" in node_input:
-        status = node_input.get("status")
-        method = node_input.get("method")
+    if isinstance(node_input, str):
+        status = node_input
+        method = "Human Review"
+    elif isinstance(node_input, dict):
+        if "status" in node_input:
+            status = node_input.get("status")
+            method = node_input.get("method")
+        else:
+            status = node_input.get("human_decision", "Rejected")
+            method = "Human Review"
     else:
-        status = node_input.get("human_decision", "Rejected")
+        status = "Rejected"
         method = "Human Review"
 
     expense = ctx.state.get("expense", {})

@@ -13,16 +13,18 @@
 # limitations under the License.
 
 import contextlib
+import json
 import os
+import logging
 from collections.abc import AsyncIterator
 
 import google.auth
 from a2a.server.tasks import InMemoryTaskStore
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from starlette.requests import Request
 from google.adk.cli.fast_api import get_fast_api_app
 from google.adk.runners import Runner
-from google.cloud import logging as google_cloud_logging
 
 from expense_agent.app_utils import services
 from expense_agent.app_utils.a2a import attach_a2a_routes
@@ -31,9 +33,11 @@ from expense_agent.app_utils.typing import Feedback
 
 load_dotenv()
 setup_telemetry()
-_, project_id = google.auth.default()
-logging_client = google_cloud_logging.Client()
-logger = logging_client.logger(__name__)
+
+# Configure standard Python logging for console logs
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 allow_origins = (
     os.getenv("ALLOW_ORIGINS", "").split(",") if os.getenv("ALLOW_ORIGINS") else None
 )
@@ -66,7 +70,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app: FastAPI = get_fast_api_app(
     agents_dir=AGENT_DIR,
-    web=True,
+    web=False,
+    trigger_sources=["pubsub"],
     artifact_service_uri=services.ARTIFACT_SERVICE_URI,
     allow_origins=allow_origins,
     session_service_uri=services.SESSION_SERVICE_URI,
@@ -75,6 +80,29 @@ app: FastAPI = get_fast_api_app(
 )
 app.title = "ambient-expense-agent"
 app.description = "API for interacting with the Agent ambient-expense-agent"
+
+
+@app.middleware("http")
+async def normalize_pubsub_subscription(request: Request, call_next):  # type: ignore[no-untyped-def]
+    """Normalize projects/.../subscriptions/NAME to just NAME.
+
+    Pub/Sub push deliveries include the fully-qualified subscription
+    resource path. The ADK trigger handler uses this value as the
+    session user_id. Normalizing to the short name keeps session
+    records clean and consistent.
+    """
+    if request.url.path.endswith("/trigger/pubsub") and request.method == "POST":
+        body = await request.body()
+        try:
+            data = json.loads(body)
+            sub = data.get("subscription", "")
+            if "/" in sub:
+                data["subscription"] = sub.rsplit("/", 1)[-1]
+                request._body = json.dumps(data).encode()
+                logger.info(f"Normalized subscription path to: {data['subscription']}")
+        except (json.JSONDecodeError, KeyError):
+            pass
+    return await call_next(request)
 
 
 @app.post("/feedback")
@@ -87,7 +115,7 @@ def collect_feedback(feedback: Feedback) -> dict[str, str]:
     Returns:
         Success message
     """
-    logger.log_struct(feedback.model_dump(), severity="INFO")
+    logger.info(f"Feedback received: {feedback.model_dump()}")
     return {"status": "success"}
 
 
@@ -95,4 +123,4 @@ def collect_feedback(feedback: Feedback) -> dict[str, str]:
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
