@@ -90,3 +90,15 @@ Built-in telemetry exports to Cloud Trace, BigQuery, and Cloud Logging.
 
 This agent supports the [A2A Protocol](https://a2a-protocol.org/). Use the [A2A Inspector](https://github.com/a2aproject/a2a-inspector) to test interoperability.
 See the [A2A Inspector docs](https://github.com/a2aproject/a2a-inspector) for details.
+
+---
+
+## 🔒 Secure Agentic Coding & TDD Lifecycle Compliance
+
+This project complies with the secure agentic coding guidelines outlined in the [Google Developers Codelab](https://codelabs.developers.google.com/secure-agentic-coding):
+
+1. **STRIDE Threat Modeling**: Conducted a systematic threat assessment documented in [threat_model.md](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/threat_model.md) to map boundaries and spoofing risks.
+2. **TDD Planning Gate**: Integrated rules in [.agents/CONTEXT.md](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/.agents/CONTEXT.md) to enforce strict boundary-condition checks on tool designs.
+3. **Outcome-Based Security Tests**: Created deterministic test suites in [test_agent_security.py](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/tests/test_agent_security.py) verifying boundaries (registered-user validation, single-use coupons, etc.).
+4. **Pre-Commit Remediation Loop**: Integrated pre-commit checks to scan for credentials/secrets, ensuring safe environment variable config fallback.
+5. **Tool Execution Interceptors**: Implemented a custom `PreToolUse` hook script in [.agents/hooks.json](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/.agents/hooks.json) to intercept command executions and block destructive commands.

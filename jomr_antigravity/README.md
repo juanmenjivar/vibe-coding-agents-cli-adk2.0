@@ -44,9 +44,11 @@ An interactive customer support assistant built to streamline customer helpdesk 
 - Routes complex queries to human operators or departments using conditional graph logic.
 
 ### 3. [secure-agent-lab](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab)
-A sandbox lab workspace configured for Kaggle CLI tasks:
-- Contains custom Git configuration (user identity) configured for `"Kaggle Student"`.
-- Houses a clean virtual environment managed via `uv` for sandbox testing.
+A sandbox lab workspace hosting the `shopping-assistant` agent, used to implement and test the secure agentic coding practices from the [Google Developers Codelab](https://codelabs.developers.google.com/secure-agentic-coding):
+- **Mock-based TDD Security Tests**: Enforces security boundaries and business logic guardrails (e.g. registered user requirements, single-use discounts, cart double-checkout checks) in [tests/test_agent_security.py](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/tests/test_agent_security.py).
+- **STRIDE Threat Model**: Includes architectural threat assessment in [threat_model.md](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/threat_model.md).
+- **Pre-Commit Remediation Loop**: Detects and refactors hardcoded secrets autonomously.
+- **Pre-Tool Interceptors**: Features `PreToolUse` interceptors in [.agents/hooks.json](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/secure-agent-lab/shopping-assistant/.agents/hooks.json) blocking destructive command execution.
 
 ### 4. [weather-assistant](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/weather-assistant)
 A conversational weather assistant powered by ADK:
