@@ -28,6 +28,10 @@ from app.tools import process_cart_checkout, redeem_discount_code
 class CustomGemini(Gemini):
     @cached_property
     def api_client(self) -> genai.Client:
+        # If Vertex AI is enabled via env, let genai.Client load ADC automatically
+        if os.environ.get("GOOGLE_GENAI_USE_VERTEXAI") == "true":
+            return genai.Client()
+        # Otherwise, fall back to Google AI Studio API key
         api_key = os.environ.get("GEMINI_API_KEY", "MOCK_DEVELOPMENT_KEY")
         return genai.Client(api_key=api_key)
 
