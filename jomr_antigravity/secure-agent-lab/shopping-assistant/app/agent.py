@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from functools import cached_property
 from google import genai
 from google.adk.agents import Agent
@@ -26,7 +28,8 @@ from app.tools import process_cart_checkout, redeem_discount_code
 class CustomGemini(Gemini):
     @cached_property
     def api_client(self) -> genai.Client:
-        return genai.Client(api_key="AIzaSyD-mock-key-value-12345")
+        api_key = os.environ.get("GEMINI_API_KEY", "MOCK_DEVELOPMENT_KEY")
+        return genai.Client(api_key=api_key)
 
 
 root_agent = Agent(
