@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "trigger": "PreToolUse",
+      "tool": "run_command",
+      "action": "python3 .agents/scripts/validate_tool_call.py",
+      "timeout_seconds": 10
+    }
+  ]
+}
