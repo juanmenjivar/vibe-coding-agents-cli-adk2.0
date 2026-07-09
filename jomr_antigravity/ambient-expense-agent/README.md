@@ -133,3 +133,57 @@ The tool evaluates and outputs:
 - **`routing_correctness`**: Verifies that expenses under $100 are auto-approved, and expenses >=$100 require human review.
 - **`security_containment`**: Verifies that SSNs are redacted, and prompt-injection attempts are escalated to a human without calling the LLM reviewer.
 - Saves evaluation result JSON and HTML files in `artifacts/grade_results/`.
+
+---
+
+## ☁️ Google Cloud Deployment & Verification
+
+### 1. Set up Environment & Enable APIs
+Authenticate your Google Cloud SDK and configure the active project:
+```bash
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project <your-project-id>
+```
+Enable the generative platform and deployment APIs:
+```bash
+gcloud services enable \
+  aiplatform.googleapis.com \
+  cloudtrace.googleapis.com \
+  cloudbuild.googleapis.com \
+  agentregistry.googleapis.com
+```
+
+### 2. Scaffold Production Descriptors
+Enhance the project with deployment metadata and service wrappers for Agent Runtime:
+```bash
+agents-cli scaffold enhance --deployment-target agent_runtime --yes
+```
+
+### 3. Local Verification (Dry Run)
+Generate a lockfile and verify the configuration before deploying to the cloud:
+```bash
+uv lock
+agents-cli deploy --dry-run
+```
+
+### 4. Deploy to Agent Runtime
+Provision resources and deploy the agent to Google Cloud Agent Runtime:
+```bash
+agents-cli deploy --project <your-project-id> --region us-east1
+```
+
+### 5. Verify Automatic Registration in Agent Registry
+Check that the deployed agent has been registered automatically in the Gemini Enterprise Agent Registry:
+```bash
+gcloud agent-registry agents list --project <your-project-id> --location us-east1
+```
+
+### 6. Clean Up Resources
+Shut down deployed resources and delete container images to avoid ongoing charges:
+```bash
+# Delete the reasoning engine from Vertex AI, remove local deployment metadata, and clean Artifact Registry
+gcloud ai reasoning-engines delete <reasoning-engine-id> --project <your-project-id> --location us-east1
+rm deployment_metadata.json
+```
+

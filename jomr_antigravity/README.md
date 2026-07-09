@@ -37,6 +37,7 @@ An event-driven ambient service that processes corporate expenses via Pub/Sub tr
 - **Security Checkpoints**: Automatically redacts sensitive PII (Social Security Numbers) and detects prompt-injection attacks (e.g. bypass rules, model bypass) to route directly to human reviewers.
 - **Auto-Approval**: Under $100 expenses are automatically approved. $100 or more goes to a human-in-the-loop (HITL) manual approval.
 - **Local Quality Flywheel**: Includes a trace generator script to automate HITL decisions and a suite of custom LLM-as-judge metrics (`routing_correctness`, `security_containment`) for scoring agent traces.
+- **Agent Runtime Deployment & Registry**: Configured for Google Cloud Agent Runtime hosting and verified to automatically register with the Gemini Enterprise Agent Registry for secure discovery and integration.
 
 ### 2. [customer_support_agent](file:///c:/Users/JUANM/Downloads/cursor_jomr_projects/jomr_antigravity/customer_support_agent)
 An interactive customer support assistant built to streamline customer helpdesk workflows:
