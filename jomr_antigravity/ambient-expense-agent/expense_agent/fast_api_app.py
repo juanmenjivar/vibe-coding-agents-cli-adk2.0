@@ -29,6 +29,7 @@ from google.adk.runners import Runner
 from expense_agent.app_utils import services
 from expense_agent.app_utils.a2a import attach_a2a_routes
 from expense_agent.app_utils.telemetry import setup_telemetry
+from expense_agent.app_utils.reasoning_engine_adapter import attach_reasoning_engine_routes
 from expense_agent.app_utils.typing import Feedback
 
 load_dotenv()
@@ -80,6 +81,8 @@ app: FastAPI = get_fast_api_app(
 )
 app.title = "ambient-expense-agent"
 app.description = "API for interacting with the Agent ambient-expense-agent"
+
+attach_reasoning_engine_routes(app)
 
 
 @app.middleware("http")

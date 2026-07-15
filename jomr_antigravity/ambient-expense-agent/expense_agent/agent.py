@@ -215,8 +215,8 @@ def security_checkpoint(ctx: Context, node_input: dict) -> Event:
         state=state_delta
     )
 
-# 4. Human Approval Node
-async def request_human_approval(ctx: Context, node_input: dict):
+# 4. Human Approval Node (review_agent)
+async def review_agent(ctx: Context, node_input: dict):
     """Pauses workflow to request human decision on reviewed expenses."""
     expense = ctx.state.get("expense", {})
     
@@ -300,10 +300,10 @@ expense_workflow = Workflow(
         }),
         (security_checkpoint, {
             "clean": risk_reviewer,
-            "injection_detected": request_human_approval,
+            "injection_detected": review_agent,
         }),
-        (risk_reviewer, request_human_approval),
-        (request_human_approval, record_outcome),
+        (risk_reviewer, review_agent),
+        (review_agent, record_outcome),
         (auto_approve, record_outcome),
     ]
 )
