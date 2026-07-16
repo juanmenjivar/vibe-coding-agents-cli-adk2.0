@@ -36,6 +36,7 @@ An event-driven ambient service that processes corporate expenses via Pub/Sub tr
 - **Stateful Graph Core**: Evaluates submitter information, category, amount, and description.
 - **Security Checkpoints**: Automatically redacts sensitive PII (Social Security Numbers) and detects prompt-injection attacks (e.g. bypass rules, model bypass) to route directly to human reviewers.
 - **Auto-Approval**: Under $100 expenses are automatically approved. $100 or more goes to a human-in-the-loop (HITL) manual approval.
+- **Manager Dashboard Frontend (`submission_frontend/`)**: A sleek FastAPI-based web app styling a dark glassmorphic design that polls the Vertex AI Session Service for active interrupts, permitting managers to approve or reject pending reports.
 - **Local Quality Flywheel**: Includes a trace generator script to automate HITL decisions and a suite of custom LLM-as-judge metrics (`routing_correctness`, `security_containment`) for scoring agent traces.
 - **Agent Runtime Deployment & Registry**: Configured for Google Cloud Agent Runtime hosting and verified to automatically register with the Gemini Enterprise Agent Registry for secure discovery and integration.
 
